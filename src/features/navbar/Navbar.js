@@ -26,7 +26,7 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-function Navar({ children }) {
+function Navbar({ children }) {
     return (
         <div className="min-h-full">
             <Disclosure as="nav" className="bg-gray-800">
@@ -66,15 +66,19 @@ function Navar({ children }) {
                                 </div>
                                 <div className="hidden md:block">
                                     <div className="ml-4 flex items-center md:ml-6">
-                                        <button
-                                            type="button"
-                                            className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                                        >
-                                            <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
-                                        </button>
-                                        <span className="inline-flex items-center no-underline rounded-md bg-green-50 mb-5 z-0 -ml-3 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                                            3
-                                        </span>
+                                        <Link to={"/cart"}>
+                                            <div className='flex'>
+                                                <button
+                                                    type="button"
+                                                    className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                                                >
+                                                    <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
+                                                </button>
+                                                <span className="inline-flex items-center no-underline rounded-md bg-green-50 mb-5 z-0 -ml-3 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                                                    3
+                                                </span>
+                                            </div>
+                                        </Link>
 
                                         {/* Profile dropdown */}
                                         <Menu as="div" className="relative ml-3">
@@ -156,15 +160,20 @@ function Navar({ children }) {
                                         <div className="text-base font-medium leading-none text-white">{user.name}</div>
                                         <div className="text-sm font-medium leading-none text-gray-400">{user.email}</div>
                                     </div>
-                                    <button
-                                        type="button"
-                                        className="relative ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                                    >
-                                        <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
-                                    </button>
-                                    <span className="inline-flex items-center rounded-md no-underline bg-green-50 mb-5 z-0 -ml-3 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                                        3
-                                    </span>
+                                    <Link to="/cart">
+                                        <div className='flex'>
+
+                                            <button
+                                                type="button"
+                                                className="relative ml-auto flex-shrink-0 z-1 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                                            >
+                                                <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
+                                            </button>
+                                            <span className="inline-flex items-center rounded-md no-underline bg-green-50 mb-5 z-0 -ml-3 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                                                3
+                                            </span>
+                                        </div>
+                                    </Link>
                                 </div>
                                 <div className="mt-3 space-y-1 px-2">
                                     {userNavigation.map((item) => (
@@ -196,4 +205,4 @@ function Navar({ children }) {
     )
 }
 
-export default Navar
+export default Navbar
