@@ -2,31 +2,35 @@ import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, ShoppingCartIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { selectItems } from '../cart/cartSlice'
+import { selectLoggedInUser } from '../auth/authSlice'
 
-const user = {
-    name: 'Tom Cook',
-    email: 'tom@example.com',
-    imageUrl:
-        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-}
 const navigation = [
-    { name: 'Dashboard', href: '#', current: true },
-    { name: 'Team', href: '#', current: false },
-    { name: 'Projects', href: '#', current: false },
-    { name: 'Calendar', href: '#', current: false },
-    { name: 'Reports', href: '#', current: false },
+    { name: 'Home', link: '/', current: true },
+    { name: 'Team', link: '#', current: false },
+    { name: 'Projects', link: '#', current: false },
+    { name: 'Calendar', link: '#', current: false },
+    { name: 'Reports', link: '#', current: false },
 ]
-const userNavigation = [
-    { name: 'Your Profile', to: '/' },
-    { name: 'Settings', to: '/' },
-    { name: 'Sign in', to: '/login' },
-]
+
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
 function Navbar({ children }) {
+
+    const user = useSelector(selectLoggedInUser);
+    const userNavigation = user ? [
+        { name: 'My Profile', link: '/profile' },
+        { name: 'My Order', link: '/orders' },
+        { name: 'Sign out', link: '/logout' },
+    ]:[
+        { name: 'Sign in', link: '/login' }
+    ]
+    
+    const items = useSelector(selectItems);
     return (
         <div className="min-h-full">
             <Disclosure as="nav" className="bg-gray-800">
@@ -47,9 +51,9 @@ function Navbar({ children }) {
                                     <div className="hidden md:block">
                                         <div className="ml-10 flex items-baseline space-x-4">
                                             {navigation.map((item) => (
-                                                <a
+                                                <Link
                                                     key={item.name}
-                                                    href={item.href}
+                                                    to={item.link}
                                                     className={classNames(
                                                         item.current
                                                             ? 'bg-gray-900 text-white'
@@ -59,7 +63,7 @@ function Navbar({ children }) {
                                                     aria-current={item.current ? 'page' : undefined}
                                                 >
                                                     {item.name}
-                                                </a>
+                                                </Link>
                                             ))}
                                         </div>
                                     </div>
@@ -74,9 +78,9 @@ function Navbar({ children }) {
                                                 >
                                                     <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
                                                 </button>
-                                                <span className="inline-flex items-center no-underline rounded-md bg-green-50 mb-5 z-0 -ml-3 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                                                    3
-                                                </span>
+                                                {items.length > 0 &&<span className="inline-flex items-center no-underline rounded-md bg-green-50 mb-5 z-0 -ml-3 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                                                    {items.length}
+                                                </span>}
                                             </div>
                                         </Link>
 
@@ -86,7 +90,7 @@ function Navbar({ children }) {
                                                 <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                                     <span className="absolute -inset-1.5" />
                                                     <span className="sr-only">Open user menu</span>
-                                                    <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                                                    <img className="h-8 w-8 rounded-full" src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' alt="" />
                                                 </Menu.Button>
                                             </div>
                                             <Transition
@@ -103,7 +107,7 @@ function Navbar({ children }) {
                                                         <Menu.Item key={item.name}>
                                                             {({ active }) => (
                                                                 <Link
-                                                                    to={item.to}
+                                                                    to={item.link}
                                                                     className={classNames(
                                                                         active ? 'bg-gray-100' : '',
                                                                         'block px-4 py-2 text-sm text-gray-700'
@@ -154,11 +158,11 @@ function Navbar({ children }) {
                             <div className="border-t border-gray-700 pb-3 pt-4">
                                 <div className="flex items-center px-5">
                                     <div className="flex-shrink-0">
-                                        <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
+                                        <img className="h-10 w-10 rounded-full" src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' alt="" />
                                     </div>
                                     <div className="ml-3">
-                                        <div className="text-base font-medium leading-none text-white">{user.name}</div>
-                                        <div className="text-sm font-medium leading-none text-gray-400">{user.email}</div>
+                                        <div className="text-base font-medium leading-none text-white">{user ? user.name: "Guest"}</div>
+                                        <div className="text-sm font-medium leading-none text-gray-400">{user? user.email: "example@emai.com"}</div>
                                     </div>
                                     <Link to="/cart">
                                         <div className='flex'>
@@ -169,9 +173,9 @@ function Navbar({ children }) {
                                             >
                                                 <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
                                             </button>
-                                            <span className="inline-flex items-center rounded-md no-underline bg-green-50 mb-5 z-0 -ml-3 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                                                3
-                                            </span>
+                                            {items.length > 0 && <span className="inline-flex items-center rounded-md no-underline bg-green-50 mb-5 z-0 -ml-3 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                                                {items.length}
+                                            </span>}
                                         </div>
                                     </Link>
                                 </div>
@@ -193,11 +197,11 @@ function Navbar({ children }) {
                 )}
             </Disclosure>
 
-            <header className="bg-white shadow">
+            {/* <header className="bg-white shadow">
                 <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                     <h1 className="text-3xl font-bold tracking-tight text-gray-800">E-Commerce</h1>
                 </div>
-            </header>
+            </header> */}
             <main>
                 <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">{children}</div>
             </main>
