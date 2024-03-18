@@ -16,7 +16,7 @@ function Signup() {
     } = useForm()
     return (
         <>
-        {user && <Navigate to='/' replace={true}></Navigate>}
+            {user && <Navigate to='/' replace={true}></Navigate>}
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 {user?.email}
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -34,7 +34,7 @@ function Signup() {
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                     <form noValidate className="space-y-6" onSubmit={handleSubmit((data) => {
-                        dispatch(createUserAsync({ email: data.email, password: data.password, addresses: [] }));
+                        dispatch(createUserAsync({ email: data.email, password: data.password, addresses: [], role:'user' }));
                         console.log(data)
                     }
                     )}>
@@ -101,7 +101,7 @@ function Signup() {
                                 {errors.confirmPassword && <p className="text-sm text-red-500">{errors.confirmPassword.message}</p>}
                             </div>
                         </div>
-
+                                    
                         <div>
                             <button
                                 type="submit"

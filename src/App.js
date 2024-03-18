@@ -1,21 +1,17 @@
 import React, { useEffect } from 'react';
-import { Counter } from './features/counter/Counter';
 import './App.css';
-import ProductList from './features/product/components/ProductList';
-import Home from './pages/HomePage';
-import Login from './features/auth/components/Login';
-import SignupPage from './pages/SignupPage';
-
-
 import {
   createBrowserRouter,
   RouterProvider,
   Route,
   Link,
 } from "react-router-dom";
+
+
+import Home from './pages/HomePage';
+import SignupPage from './pages/SignupPage';
 import CartPage from './pages/CartPage';
 import Checkout from './pages/CheckoutPage';
-import ProductDetail from './features/product/components/ProductDetail';
 import ProductDetailPage from './pages/ProductDetailPage';
 import LoginPage from './pages/LoginPage';
 import Protected from './features/auth/components/Protected';
@@ -28,13 +24,20 @@ import UserOrders from './pages/UserOrders';
 import UserProfilePage from './pages/UserProfilePage';
 import { fetchLoggedInUserAsync } from './features/user/userSlice';
 import Logout from './features/auth/components/Logout';
-import ForgotPassword from './features/auth/components/ForgotPassword';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ProtectedAdmin from './features/auth/components/ProtectedAdmin';
+import AdminHomePage from './pages/AdminHomePage';
+import AdminProductDetailPage from './pages/AdminProductDetailPage';
+import AdminProductForm from './pages/AdminProductForm';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Protected><Home /></Protected>,
+  },
+  {
+    path: "/admin",
+    element: <ProtectedAdmin><AdminHomePage /></ProtectedAdmin>,
   },
   {
     path: "/signup",
@@ -56,6 +59,18 @@ const router = createBrowserRouter([
   {
     path: "/product-detail/:id",
     element: <Protected><ProductDetailPage /></Protected>,
+  },
+  {
+    path: "/admin/product-detail/:id",
+    element: <ProtectedAdmin><AdminProductDetailPage /></ProtectedAdmin>,
+  },
+  {
+    path: "/admin/product-form",
+    element: <ProtectedAdmin><AdminProductForm /></ProtectedAdmin>,
+  },
+  {
+    path: "/admin/product-form/edit/:id",
+    element: <ProtectedAdmin><AdminProductForm /></ProtectedAdmin>,
   },
   {
     path: "/order-success/:id",

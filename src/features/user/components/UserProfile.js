@@ -61,8 +61,8 @@ export default function UserProfile() {
     <div className='mx-auto max-w-2xl px-0 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8'>
       <div className="space-y-12">
         <div className="border-b border-gray-900/10 pb-12">
-          <h2 className="text-base font-semibold leading-7 text-gray-900">Profile</h2>
-          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+          <h2 className="text-base font-semibold leading-7 text-gray-900">{user.role === 'admin' && user.role.charAt(0).toUpperCase() + user.role.slice(1)} Profile</h2> 
+          <div className="mt-3 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="sm:col-span-4">
               <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
                 Name
