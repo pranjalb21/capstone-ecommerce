@@ -9,7 +9,8 @@ import { selectUserInfo } from '../user/userSlice'
 
 const navigation = [
     { name: 'Home', link: '/', user: true },
-    { name: 'Admin', link: '/admin', admin: true }
+    { name: 'Admin', link: '/admin', admin: true },
+    { name: 'Orders', link: '/admin/orders', admin: true }
 ]
 
 

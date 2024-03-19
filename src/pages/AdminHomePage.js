@@ -1,11 +1,11 @@
 import AdminProductList from "../features/admin/components/AdminProductList";
-import Navar from "../features/navbar/Navbar";
+import Navbar from "../features/navbar/Navbar";
 
 function AdminHomePage() {
     return (  
-        <Navar>
+        <Navbar>
             <AdminProductList></AdminProductList>
-        </Navar>
+        </Navbar>
     );
 }
 
