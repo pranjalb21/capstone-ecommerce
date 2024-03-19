@@ -11,3 +11,20 @@ export function createOrder(order) {
   }
   );
 }
+
+
+export function fetchAllOrders(pagination) {
+  let queryString = '';
+  for (let key in pagination) {
+    queryString += `${key}=${pagination[key]}&`
+  }
+  return new Promise(async (resolve) => {
+    //Todo: Replace hard code of url;
+    const res = await fetch(`http://localhost:8000/orders?` + queryString);
+    const data = await res.json();
+    const totalOrders = await res.headers.get('X-Total-Count');
+    resolve({ data: { orders: data, totalOrders: +totalOrders } });
+  }
+  );
+}
+

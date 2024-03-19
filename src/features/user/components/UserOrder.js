@@ -4,6 +4,7 @@ import {
   fetchLoggedInUserOrdersAsync, selectUserInfo, selectUserOrders,
 } from '../userSlice';
 import { Link } from 'react-router-dom';
+import { discountedPrice } from '../../../app/constants';
 
 export default function UserOrder() {
   const dispatch = useDispatch();
@@ -39,7 +40,7 @@ export default function UserOrder() {
                           <h3>
                             <Link to={`/product-detail/${product.itemId}`} className=' hover:underline'>{product.title}</Link>
                           </h3>
-                          <p className="ml-4">${product.price * product.quantity}</p>
+                          <p className="ml-4">${discountedPrice(product) * product.quantity}</p>
                         </div>
                         <p className="mt-1 text-sm text-gray-500">{product.brand}</p>
                       </div>

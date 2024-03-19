@@ -1,20 +1,54 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { createProductAsync, selectAllBrands, selectAllCategories } from '../../product/productSlice'
+import { clearSelectedProduct, createProductAsync, fetchProductByIDAsync, selectAllBrands, selectAllCategories, selectedProduct, updateProductAsync } from '../../product/productSlice'
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 
-export default function ProductForm() {
+export default function ProductUpdateForm() {
     const brands = useSelector(selectAllBrands);
     const categories = useSelector(selectAllCategories);
     const {
         register,
         handleSubmit,
         reset,
+        setValue,
         formState: { errors },
     } = useForm();
     const dispatch = useDispatch();
+    const params = useParams();
+    const selectedItem = useSelector(selectedProduct);
+
+    useEffect(()=>{
+        if(params.id){
+            dispatch(fetchProductByIDAsync(params.id));
+        }
+    },[params.id, dispatch])
+
+
+    useEffect(()=>{
+        if(selectedItem){
+            setValue('title', selectedItem.title);
+            setValue('description', selectedItem.description);
+            setValue('price', selectedItem.price);
+            setValue('discountPercentage', selectedItem.discountPercentage);
+            setValue('stock', selectedItem.stock);
+            setValue('brand', selectedItem.brand);
+            setValue('category', selectedItem.category);
+            setValue('thumbnail', selectedItem.thumbnail);
+            setValue('image1', selectedItem.images[0]);
+            setValue('image2', selectedItem.images[1]);
+            setValue('image3', selectedItem.images[2]);
+            setValue('image4', selectedItem.images[3]);
+            setValue('image5', selectedItem.images[4]);
+        }
+    },[selectedItem, setValue])
+
+    const handleDelete = ()=>{
+        const deletedProduct = {...selectedItem};
+        deletedProduct.active = false;
+        dispatch(updateProductAsync(deletedProduct));
+    }
     return (
         <form
             noValidate
@@ -24,7 +58,7 @@ export default function ProductForm() {
                     description: data.description,
                     price: +data.price,
                     discountPercentage: +data.discountPercentage,
-                    rating: +0,
+                    rating: selectedItem.rating,
                     stock: +data.stock,
                     brand: data.brand,
                     active: true,
@@ -38,7 +72,8 @@ export default function ProductForm() {
                         data.image5,
                     ]
                 }
-                dispatch(createProductAsync(product));
+                product.id = selectedItem.id
+                dispatch(updateProductAsync(product));
                 reset();
             })}
         >
@@ -47,7 +82,7 @@ export default function ProductForm() {
                     <h1 className="font-bold text-gray-900">Add a new product</h1>
                     <hr />
                     <p className="mt-5 text-sm leading-6 text-gray-600">
-                        Fill the details of the product
+                        Fill the below details of the product
                     </p>
                     <div className="mt-5 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                         <div className="sm:col-span-6">
@@ -63,7 +98,7 @@ export default function ProductForm() {
                                             required: "Product name is required."
                                         })}
                                         className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                        placeholder="Enter the name of the product."
+                                        placeholder="Enter the name of the product"
                                     />
                                 </div>
                                 {errors.title && <p className='text-sm text-red-500'>{errors.title.message}</p>}
@@ -312,6 +347,12 @@ export default function ProductForm() {
                     <Link to={'/admin'} onClick={()=>reset()} type="button" className="text-sm font-semibold leading-6 text-gray-900">
                         Cancel
                     </Link>
+                    {selectedItem && <button 
+                    onClick={()=>handleDelete()}
+                        className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+                    >
+                        Delete
+                    </button>}
                     <button
                         type="submit"
                         className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"

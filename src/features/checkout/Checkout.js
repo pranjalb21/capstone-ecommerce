@@ -6,6 +6,7 @@ import { updateUserAsync } from "../auth/authSlice";
 import { useState } from "react";
 import { createOrderAsync, selectCurrentOrder } from "../order/orderSlice";
 import { selectUserInfo } from "../user/userSlice";
+import { discountedPrice } from "../../app/constants";
 
 function Checkout() {
     const {
@@ -17,7 +18,7 @@ function Checkout() {
     const products = useSelector(selectItems);
     const items = useSelector(selectItems);
     const currentOrder = useSelector(selectCurrentOrder);
-    const totalAmount = products.reduce((amount, item) => item.price * item.quantity + amount, 0)
+    const totalAmount = products.reduce((amount, item) => discountedPrice(item) * item.quantity + amount, 0)
     const totalItems = products.reduce((totalItem, item) => item.quantity + totalItem, 0);
     const dispatch = useDispatch()
     const [selectedAddress, setSelectedAddress] = useState(null);
@@ -301,7 +302,7 @@ function Checkout() {
                                                             <h3>
                                                                 <Link to={`/product-detail/${product.id}`} className=' hover:underline'>{product.title}</Link>
                                                             </h3>
-                                                            <p className="ml-4">${product.price * product.quantity}</p>
+                                                            <p className="ml-4">${discountedPrice(product) * product.quantity}</p>
                                                         </div>
                                                         <p className="mt-1 text-sm text-gray-500">{product.brand}</p>
                                                     </div>
