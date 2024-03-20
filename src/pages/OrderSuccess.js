@@ -4,6 +4,7 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { resetCartAsync } from '../features/cart/cartSlice';
 import { resetOrder } from '../features/order/orderSlice';
 import { selectUserInfo } from '../features/user/userSlice';
+import Navbar from '../features/navbar/Navbar';
 
 function OrderSuccess({ order }) {
     const param = useParams();
@@ -17,7 +18,7 @@ function OrderSuccess({ order }) {
         dispatch(resetOrder());     
     },[dispatch, user])
     return (
-        <>
+        <Navbar>
             {!param.id && <Navigate to={'/'} replace={true} />}
             <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
                 <div className="text-center">
@@ -34,7 +35,7 @@ function OrderSuccess({ order }) {
                     </div>
                 </div>
             </main>
-        </>
+        </Navbar>
     )
 }
 
