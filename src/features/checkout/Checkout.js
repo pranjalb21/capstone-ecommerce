@@ -44,14 +44,14 @@ function Checkout() {
 
     const handleOrder = (e) => {
         if (selectedAddress && paymentMethod) {
-            const order = { 
-                items, 
-                totalAmount, 
-                totalItems, 
-                user, 
-                paymentMethod, 
-                selectedAddress, 
-                status: 'pending' /*Other statuses are delivered, received */ 
+            const order = {
+                items,
+                totalAmount,
+                totalItems,
+                user,
+                paymentMethod,
+                selectedAddress,
+                status: 'pending' /*Other statuses are delivered, received */
             }
             dispatch(createOrderAsync(order))
         }
@@ -82,7 +82,75 @@ function Checkout() {
                                     <h2 className="text-2xl font-semibold leading-7 text-gray-900">Shipping details</h2>
                                     <p className="mt-1 text-sm leading-6 text-gray-500">Provide shipping info</p>
 
-                                    <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                                    <div className="borde-b border-gray-900/10 pb-12 mt-10 space-y-10">
+                                        <fieldset>
+                                            <legend className="text-xl font-bold leading-6 text-gray-900">Payment method:</legend>
+                                            <p className="mt-1 text-sm leading-6 text-gray-500">Please choose a payment method</p>
+                                            <div className="mt-6 space-y-6">
+                                                <div className="flex items-center gap-x-3">
+                                                    <input
+                                                        id="push-everything"
+                                                        name="payments"
+                                                        value="cash"
+                                                        onChange={handlePayment}
+                                                        checked={paymentMethod === "cash"}
+                                                        type="radio"
+                                                        className="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-600 cursor-pointer"
+                                                    />
+                                                    <label htmlFor="push-everything" className="block text-sm font-medium leading-6 text-gray-900">
+                                                        Cash
+                                                    </label>
+                                                </div>
+                                                <div className="flex items-center gap-x-3">
+                                                    <input
+                                                        id="push-email"
+                                                        name="payments"
+                                                        value="card"
+                                                        onChange={handlePayment}
+                                                        checked={paymentMethod === "card"}
+                                                        type="radio"
+                                                        className="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                                    />
+                                                    <label htmlFor="push-email" className="block text-sm font-medium leading-6 text-gray-900">
+                                                        Card
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div className="border-b border-gray-900/10 pb-12">
+                                        <h2 className="text-base font-bold leading-7 text-gray-900">Address</h2>
+                                        <p className="mt-1 text-sm leading-6 text-gray-500">
+                                            Choose from an existing address
+                                        </p>
+                                        <ul role="list">
+                                            {user.addresses.map((address, index) => (
+                                                <li key={index} className="flex justify-between gap-x-6 py-5 px-5 border m-1">
+                                                    <div className="flex min-w-0 gap-x-4">
+                                                        <input
+                                                            id="push-everything"
+                                                            name="adress"
+                                                            type="radio"
+                                                            onChange={handleAddress}
+                                                            value={index}
+                                                            className="h-5 w-5 mt-1 self-center cursor-pointer border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                                        />
+                                                        <div className="min-w-0 flex-auto">
+                                                            <p className="text-sm font-bold leading-6 text-gray-900">{address.name}</p>
+                                                            <p className="mt-1 truncate text-xs leading-5 text-gray-600">{address.street}</p>
+                                                            <p className="mt-1 truncate text-xs leading-5 text-gray-600">{address.city}, {address.pinCode}</p>
+                                                            <p className="mt-1 truncate text-xs leading-5 text-gray-600">{address.email}</p>
+                                                            <p className="mt-1 truncate text-xs leading-5 text-gray-600">{address.phone}</p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            ))}
+                                        </ul>
+
+                                    </div>
+
+                                    <p className="mt-1 text-sm leading-6 text-gray-500">Add new address</p>
+                                    <div className="mt-3 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                         <div className="sm:col-span-4">
                                             <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
                                                 Full Name
@@ -211,71 +279,7 @@ function Checkout() {
                                     </button>
                                 </div>
 
-                                <div className="border-b border-gray-900/10 pb-12">
-                                    <h2 className="text-base font-bold leading-7 text-gray-900">Address</h2>
-                                    <p className="mt-1 text-sm leading-6 text-gray-500">
-                                        Choose from an existing address
-                                    </p>
-                                    <ul role="list">
-                                        {user.addresses.map((address, index) => (
-                                            <li key={index} className="flex justify-between gap-x-6 py-5 px-5 border m-1">
-                                                <div className="flex min-w-0 gap-x-4">
-                                                    <input
-                                                        id="push-everything"
-                                                        name="adress"
-                                                        type="radio"
-                                                        onChange={handleAddress}
-                                                        value={index}
-                                                        className="h-5 w-5 mt-1 self-center cursor-pointer border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                                    />
-                                                    <div className="min-w-0 flex-auto">
-                                                        <p className="text-sm font-bold leading-6 text-gray-900">{address.name}</p>
-                                                        <p className="mt-1 truncate text-xs leading-5 text-gray-600">{address.street}</p>
-                                                        <p className="mt-1 truncate text-xs leading-5 text-gray-600">{address.city}, {address.pinCode}</p>
-                                                        <p className="mt-1 truncate text-xs leading-5 text-gray-600">{address.email}</p>
-                                                        <p className="mt-1 truncate text-xs leading-5 text-gray-600">{address.phone}</p>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                    <div className="mt-10 space-y-10">
-                                        <fieldset>
-                                            <legend className="text-xl font-bold leading-6 text-gray-900">Payment method:</legend>
-                                            <p className="mt-1 text-sm leading-6 text-gray-500">Please choose a payment method</p>
-                                            <div className="mt-6 space-y-6">
-                                                <div className="flex items-center gap-x-3">
-                                                    <input
-                                                        id="push-everything"
-                                                        name="payments"
-                                                        value="cash"
-                                                        onChange={handlePayment}
-                                                        checked={paymentMethod === "cash"}
-                                                        type="radio"
-                                                        className="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-600 cursor-pointer"
-                                                    />
-                                                    <label htmlFor="push-everything" className="block text-sm font-medium leading-6 text-gray-900">
-                                                        Cash
-                                                    </label>
-                                                </div>
-                                                <div className="flex items-center gap-x-3">
-                                                    <input
-                                                        id="push-email"
-                                                        name="payments"
-                                                        value="card"
-                                                        onChange={handlePayment}
-                                                        checked={paymentMethod === "card"}
-                                                        type="radio"
-                                                        className="h-5 w-5 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                                    />
-                                                    <label htmlFor="push-email" className="block text-sm font-medium leading-6 text-gray-900">
-                                                        Card
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </fieldset>
-                                    </div>
-                                </div>
+
                             </div>
                         </form>
                     </div>
@@ -357,7 +361,7 @@ function Checkout() {
                                 <div className="mt-6">
                                     <div
                                         onClick={handleOrder}
-                                        className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                                        className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 cursor-pointer"
                                     >
                                         Order now
                                     </div>

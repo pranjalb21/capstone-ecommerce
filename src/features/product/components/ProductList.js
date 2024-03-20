@@ -371,12 +371,19 @@ function ProductGrid({ products }) {
                     <div>
                       <p className="text-sm font-semibold text-gray-900">
                         ${discountedPrice(product)}
-                        </p>
+                      </p>
                       <p className="text-sm font-semibold line-through text-gray-500">
                         ${product.price}
                       </p>
                     </div>
                   </div>
+                    {product.stock <= 0 &&
+                      <div className="p-2">
+                        <p className="text-sm font-semibold text-yellow-900">
+                          *Out of stock
+                        </p>
+                      </div>
+                    }
                 </Link>
               </div>
             ))}
