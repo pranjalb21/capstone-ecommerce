@@ -11,6 +11,7 @@ function AdminOrder() {
     const totalOrders = useSelector(selectTotalOrders);
     const dispatch = useDispatch();
     const [editableOrder, setEditableOrder] = useState(-1);
+    const [sort, setSort] = useState({});
 
     const handleShow = (order) => {
         console.log(order)
@@ -29,16 +30,19 @@ function AdminOrder() {
         setEditableOrder(-1)
     }
 
-    function handlePage(page) {
+    const handleSort = (option) => {
+        const sort = { _sort: option.sort, _order: option.order }
+        setSort(sort);
+    }
+
+    const handlePage = (page) => {
         setPage(page);
-        const pagination = { _page: page, _limit: ITEM_LIMIT_PER_PAGE };
-        dispatch(fetchAllOrdersAsync(pagination));
     }
 
     useEffect(() => {
         const pagination = { _page: page, _limit: ITEM_LIMIT_PER_PAGE };
-        dispatch(fetchAllOrdersAsync(pagination));
-    }, [dispatch, page]);
+        dispatch(fetchAllOrdersAsync({ sort, pagination }));
+    }, [dispatch, page, sort]);
     return (
         <>
             <div className="overflow-x-auto">
@@ -48,14 +52,26 @@ function AdminOrder() {
                             <table className="min-w-max w-full table-auto">
                                 <thead>
                                     <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                                        <th className="py-3 px-6 text-left">Order#</th>
+                                        <th className="py-3 px-6 text-left cursor-pointer"
+                                            onClick={() => handleSort({ sort: 'id', order: sort?._order === 'asc' ? 'desc' : 'asc' })}
+                                        >
+                                            Order# {(
+                                                sort._sort==='id'&& sort._order==='asc')?'▲':
+                                                ((sort._sort==='id'&&sort._order==='desc')?'▼':'')}
+                                        </th>
                                         <th className="py-3 px-6 text-left">Items</th>
                                         <th className="py-3 px-6 text-center">
                                             Total amount
                                             <div className='text-xs font-light tracking-tighter font-arial'>*Includes $10 Shipping charges</div>
                                         </th>
                                         <th className="py-3 px-6 text-center">Shipping Address</th>
-                                        <th className="py-3 px-6 text-center">Status</th>
+                                        <th className="py-3 px-6 text-center cursor-pointer"
+                                        onClick={() => handleSort({ sort: 'status', order: sort?._order === 'asc' ? 'desc' : 'asc' })}
+                                        >
+                                            Status {(
+                                                sort._sort==='status'&& sort._order==='asc')?'▲':
+                                                ((sort._sort==='status'&&sort._order==='desc')?'▼':'')}
+                                        </th>
                                         <th className="py-3 px-6 text-center">Actions</th>
                                     </tr>
                                 </thead>
@@ -181,7 +197,7 @@ function AdminOrder() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
         </>
 
     )
