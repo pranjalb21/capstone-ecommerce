@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchAllOrdersAsync, selectAllOrder, selectTotalOrders } from '../../order/orderSlice'
+import { fetchAllOrdersAsync, selectAllOrder, selectTotalOrders, updateOrderAsync } from '../../order/orderSlice'
 import { ITEM_LIMIT_PER_PAGE, discountedPrice } from '../../../app/constants'
-
-
+import Pagination from '../../common/Pagination';
 
 
 function AdminOrder() {
@@ -11,13 +10,29 @@ function AdminOrder() {
     const orders = useSelector(selectAllOrder);
     const totalOrders = useSelector(selectTotalOrders);
     const dispatch = useDispatch();
+    const [editableOrder, setEditableOrder] = useState(-1);
 
     const handleShow = (order) => {
         console.log(order)
     }
 
     const handleEdit = (order) => {
+        if (editableOrder === -1)
+            setEditableOrder(order.id)
+        else
+            setEditableOrder(-1)
+    }
 
+    const handleUpdate = (e, order) => {
+        const updatedOrder = { ...order, status: e.target.value };
+        dispatch(updateOrderAsync(updatedOrder));
+        setEditableOrder(-1)
+    }
+
+    function handlePage(page) {
+        setPage(page);
+        const pagination = { _page: page, _limit: ITEM_LIMIT_PER_PAGE };
+        dispatch(fetchAllOrdersAsync(pagination));
     }
 
     useEffect(() => {
@@ -62,6 +77,7 @@ function AdminOrder() {
                                                             <img
                                                                 className="w-12 h-12 rounded-full mr-3"
                                                                 src={item.thumbnail}
+                                                                alt={item.title}
                                                             />
                                                             <span className='self-center'>{item.title} &nbsp;x {item.quantity} = <b> $<span className='line-through mr-2'>{item.price * item.quantity} </span> ${discountedPrice(item) * item.quantity}</b></span>
                                                         </div>
@@ -86,10 +102,33 @@ function AdminOrder() {
                                                     </span>
                                                 </div>
                                             </td>
-                                            <td className="py-3 px-6 text-center">
-                                                <span className="bg-purple-200 text-red-600 py-1 px-3 rounded-full text-xs font-bold">
-                                                    {order.status[0].toUpperCase() + order.status.slice(1)}
-                                                </span>
+                                            <td className="py-5 px-5 text-center">
+                                                {order.id === editableOrder ?
+                                                    <div className=''>
+                                                        <select
+                                                            className='h-10 w-full border-none rounded-md text-sm font-bold p-1 bg-transparent'
+                                                            onChange={e => handleUpdate(e, order)}
+                                                            value={order.status}
+                                                        >
+                                                            <option value='pending'>Pending</option>
+                                                            <option value='accepted'>Accepted</option>
+                                                            <option value='dispatched'>Dispatched</option>
+                                                            <option value='completed'>Completed</option>
+                                                        </select>
+                                                    </div> :
+                                                    <span className={
+                                                        order.status === 'pending' ?
+                                                            ("bg-purple-200 text-red-600 py-1 px-3 rounded-full text-xs font-bold") :
+                                                            order.status === 'accepted' ?
+                                                                ("bg-yellow-200 text-black-600 py-1 px-3 rounded-full text-xs font-bold") :
+                                                                order.status === 'dispatched' ?
+                                                                    ("bg-blue-200 text-black-600 py-1 px-3 rounded-full text-xs font-bold") :
+                                                                    ("bg-green-200 text-green-600 py-1 px-3 rounded-full text-xs font-bold")
+
+                                                    }>
+                                                        {order.status[0].toUpperCase() + order.status.slice(1)}
+                                                    </span>
+                                                }
                                             </td>
                                             <td className="py-3 px-6 text-center">
                                                 <div className="flex item-center justify-center">
@@ -138,6 +177,7 @@ function AdminOrder() {
                                         </tr>)}
                                 </tbody>
                             </table>
+                            <Pagination handlePage={handlePage} totalItems={totalOrders} page={page} setPage={setPage} />
                         </div>
                     </div>
                 </div>
