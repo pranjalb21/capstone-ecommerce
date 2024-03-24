@@ -14,7 +14,7 @@ function AdminOrder() {
     const [sort, setSort] = useState({});
 
     const handleShow = (order) => {
-        console.log(order)
+        // console.log(order)
     }
 
     const handleEdit = (order) => {

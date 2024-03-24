@@ -10,7 +10,7 @@ export function fetchLoggedInUserOrders(userId) {
 
 export function fetchLoggedInUser(userId) {
   return new Promise(async(resolve) => {
-    const res = await fetch(`http://localhost:8000/users/${userId}`);
+    const res = await fetch(`http://localhost:8000/user/${userId}`);
     const data = res.json();
     resolve({ data });
   }
@@ -19,7 +19,7 @@ export function fetchLoggedInUser(userId) {
 
 export function updateUser(update) {
   return new Promise(async (resolve) => {
-    const res = await fetch(`http://localhost:8000/users/${update.id}`, {
+    const res = await fetch(`http://localhost:8000/user/${update.id}`, {
       method: 'PATCH',
       body: JSON.stringify(update),
       headers: { 'content-type': 'application/json' }

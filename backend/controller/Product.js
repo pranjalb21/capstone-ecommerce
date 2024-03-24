@@ -33,12 +33,30 @@ exports.fetchAllProducts = async (req, res) => {
         query = query.skip(pageSize * (page - 1)).limit(pageSize);
     }
     const totalDocs = await totalProductsCount.count().exec();
-    console.log({totalDocs})
-    
+    console.log({ totalDocs })
+
     try {
         const response = await query.exec();
         res.set('X-Total-Count', totalDocs)
         res.status(200).json(response)
+    } catch (error) {
+        res.status(400).json(error);
+    }
+}
+
+exports.fetchProductById = async (req, res) => {
+    try {
+        const product = await Product.findById(req.params.id).exec();
+        res.status(200).json(product);
+    } catch (error) {
+        res.staus(400).json(error);
+    }
+}
+
+exports.updateProduct = async (req, res) => {
+    try {
+        const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.status(201).json(product)
     } catch (error) {
         res.status(400).json(error);
     }
