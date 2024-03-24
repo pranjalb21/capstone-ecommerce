@@ -68,7 +68,6 @@ export default function ProductList() {
       const index = newFilter[section.id].findIndex(el => el === option.value);
       newFilter[section.id].splice(index, 1);
     }
-    console.log({ newFilter })
     setFilter(newFilter);
   }
 
@@ -78,7 +77,6 @@ export default function ProductList() {
   }
 
   function handlePage(page) {
-    console.log({ page });
     setPage(page);
   }
 

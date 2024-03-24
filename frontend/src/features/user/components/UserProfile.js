@@ -3,13 +3,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   selectUserInfo
 } from '../userSlice';
-import { updateUserAsync } from '../../auth/authSlice';
+import { selectLoggedInUser, updateUserAsync } from '../../auth/authSlice';
 import { UserCircleIcon } from '@heroicons/react/24/outline';
 import { useForm } from 'react-hook-form';
 
 export default function UserProfile() {
   const dispatch = useDispatch();
-  const user = useSelector(selectUserInfo);
+  const user = useSelector(selectLoggedInUser);
   const [updateAddressIndex, setUpdateAddressIndex] = useState(-1)
   const {
     register,

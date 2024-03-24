@@ -63,7 +63,6 @@ export const cartSlice = createSlice({
       .addCase(addToCartAsync.fulfilled, (state, action) => {
         state.status = 'idle';
         const index = state.items.findIndex(item => item.title === action.payload.title)
-        console.log(index);
         if (index>=0) {
           state.items[index]['quantity'] += 1;
         } else { state.items.push(action.payload) };
@@ -80,8 +79,7 @@ export const cartSlice = createSlice({
       })
       .addCase(updateCartAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        const index = state.items.findIndex(item => item.id === action.payload.id)
-        state.items[index] = action.payload;
+        state.items = action.payload;
       })
       .addCase(deleteCartItemAsync.pending, (state) => {
         state.status = 'loading';

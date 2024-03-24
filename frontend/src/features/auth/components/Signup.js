@@ -34,11 +34,27 @@ function Signup() {
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                     <form noValidate className="space-y-6" onSubmit={handleSubmit((data) => {
-                        dispatch(createUserAsync({ email: data.email, password: data.password, addresses: [], role:'user' }));
-                        console.log(data)
+                        dispatch(createUserAsync({ name: data.name, email: data.email, password: data.password, addresses: [], role: 'user' }));
                     }
                     )}>
                         <div>
+                            <div>
+                                <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
+                                    Full name
+                                </label>
+                                <div className="mt-2">
+                                    <input
+                                        id="name"
+                                        {...register("name", {
+                                            required: "Enter your name",
+                                        })
+                                        }
+                                        type="text"
+                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    />
+                                    {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
+                                </div>
+                            </div>
                             <div>
                                 <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                                     Email address
@@ -101,11 +117,11 @@ function Signup() {
                                 {errors.confirmPassword && <p className="text-sm text-red-500">{errors.confirmPassword.message}</p>}
                             </div>
                         </div>
-                                    
+
                         <div>
                             <button
                                 type="submit"
-                                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer"
                             >
                                 Sign up
                             </button>

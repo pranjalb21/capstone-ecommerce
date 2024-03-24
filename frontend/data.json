@@ -1046,6 +1046,29 @@
       "userId": 4,
       "itemId": 1,
       "id": 2
+    },
+    {
+      "title": "Samsung Universe 9",
+      "description": "Samsung's new variant which goes beyond Galaxy to the Universe",
+      "price": 110,
+      "discountPercentage": 15.46,
+      "rating": 4.09,
+      "stock": 36,
+      "active": true,
+      "brand": "apple",
+      "category": "smartphones",
+      "thumbnail": "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
+      "images": [
+        "https://i.dummyjson.com/data/products/3/1.jpg",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "quantity": 1,
+      "userId": 2,
+      "itemId": 3,
+      "id": 3
     }
   ],
   "orders": [

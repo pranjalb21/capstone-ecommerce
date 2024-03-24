@@ -12,7 +12,6 @@ function OrderSuccess({ order }) {
     const dispatch = useDispatch();
     useEffect(()=>{
         //Reset cart
-        console.log(user.id);
         dispatch(resetCartAsync(user.id)); 
         //Reset current order
         dispatch(resetOrder());     

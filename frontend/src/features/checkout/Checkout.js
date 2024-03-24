@@ -33,12 +33,10 @@ function Checkout() {
     }
 
     const handleAddress = (e) => {
-        console.log(user.addresses[e.target.value])
         setSelectedAddress(user.addresses[e.target.value])
     }
 
     const handlePayment = (e) => {
-        console.log(e.target.value)
         setPaymentMethod(e.target.value)
     }
 
@@ -72,7 +70,6 @@ function Checkout() {
                     <div className="lg:col-span-3">
                         <form noValidate className="bg-white p-5 rounded"
                             onSubmit={handleSubmit((data) => {
-                                console.log(data)
                                 dispatch(updateUserAsync({ ...user, addresses: [...user.addresses, data] }));
                                 reset();
                             })}

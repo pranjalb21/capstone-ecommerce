@@ -15,7 +15,7 @@ export function addToCart(item) {
 export function fetchItemsByUserId(userId) {
   return new Promise(async(resolve) => {
     //Todo: Replace hard code of url;
-    const res = await fetch(`http://localhost:8000/cart?userId=${userId}`);
+    const res = await fetch(`http://localhost:8000/cart?user=${userId}`);
     const data = await res.json();
     resolve({ data});
   }
@@ -26,7 +26,7 @@ export function updateCart(update) {
   return new Promise(async (resolve) => {
     const res = await fetch(`http://localhost:8000/cart/${update.id}`, {
       method: 'PATCH',
-      body: JSON.stringify(update),
+      body: JSON.stringify({quantity: update.quantity}),
       headers: { 'content-type': 'application/json' }
     });
     const data = res.json();
@@ -54,7 +54,6 @@ export function resetCart(userId) {
     for(let item of items){
       await deleteCartItem(item.id);
     }
-    console.log(items)
     resolve({status: 'Success'})
   })
 }
